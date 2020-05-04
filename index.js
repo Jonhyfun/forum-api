@@ -2,6 +2,7 @@ const express = require('express')
 const expressIp = require('express-ip')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const moment = require('moment-timezone')
 
 const Example = require('./src/routes/Example')
 
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors({ origin: true }))
 
 app.use((error, req, res, next) => {
-  if(res.headersSent) { return next(error) }
+  if (res.headersSent) { return next(error) }
   res.status(error.status || 500).json({
     error: {
       message: error.message
@@ -30,9 +31,12 @@ app.use((error, req, res, next) => {
 app.use('/example', Example)
 
 app.use((req, res, next) => {
-  const error = new Error('Not found')
-  error.status = 404
-  next(error)
+  return res.status(404).json({
+    status: true,
+    error: true,
+    reason: 'route/not-found',
+    message: `Mensagem voltada em ${moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss')}`
+  })
 })
 
 module.exports.app = app
