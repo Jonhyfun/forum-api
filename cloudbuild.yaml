@@ -7,4 +7,4 @@ steps:
       args: ['push', 'gcr.io/$PROJECT_ID/$REPO_NAME']
     # Deploy container image to Cloud Run
     - name: 'gcr.io/cloud-builders/gcloud'
-      args: ['run', 'deploy', 'forum', '--image', 'gcr.io/$PROJECT_ID/$REPO_NAME', '--region', 'us-east1', '--memory', '1024Mi', '--concurrency', '30', '--platform', 'managed', '--allow-unauthenticated']
+      args: ['run', 'deploy', 'forum-develop', '--image', 'gcr.io/$PROJECT_ID/$REPO_NAME', '--region', 'us-east1', '--memory', '1024Mi', '--concurrency', '30', '--platform', 'managed', '--allow-unauthenticated']
