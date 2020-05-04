@@ -1,6 +1,6 @@
 const moment = require('moment-timezone')
 
-exports.getVideos = async (req, res) => {
+exports.example = async (req, res) => {
   return res.status(200).json({
     status: true,
     error: false,
