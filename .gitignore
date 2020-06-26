@@ -112,4 +112,6 @@ dist
 # Credentials directory
 credentials/
 
+src/firebaseConfig.js
+
 makefile
