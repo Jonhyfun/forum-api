@@ -1,28 +1,40 @@
 const moment = require('moment-timezone');
 const fetch = require("node-fetch");
 const firebase = require('../../firebaseConfig');
-const request = require('request');
 
 exports.postList = async (req, res) => {
-  let response = await fetch(url().posts);
+  let response = await fetch(Url().posts);
   let data = await response.json();
-  return res.status(200).json({
+  return success(data,res);
+}
+
+exports.enviarPost = async (req,res) => {
+  var id = Math.floor(1000 + Math.random() * 9000);
+  let response = await fetch(Url(id).singlePost, { method: 'PATCH', body: req.body,});
+  //let data = await response.json();
+  return success(null,res);
+}
+
+exports.singlePost = async (req, res) => {
+  var PostID = req.params.id;
+  var erro = "Post não existe";
+  return await Fetch(req,res,Url(PostID).singlePost,erro);
+}
+
+exports.Answers = async (req, res) => {
+  var PostID = req.params.id;
+  var erro = "Resposta ao post não existe";
+  return await Fetch(req,res,Url(PostID).respostas,erro);
+}
+
+function success(data, res){
+return res.status(200).json({
     status: true,
 	data: JSON.stringify(data),
     error: false,
     reason: null,
     message: `Mensagem voltada em ${moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss')}`
   });
-}
-
-exports.singlePost = async (req, res) => {
-  var PostID = req.params.id;
-  return await Fetch(req,res,url(PostID).singlePost);
-}
-
-exports.Answers = async (req, res) => {
-  var PostID = req.params.id;
-  return await Fetch(req,res,url(PostID).respostas);
 }
 
 async function Fetch(req,res,url) {
@@ -39,7 +51,7 @@ let data;
   if(data == null) {
 	status = 500;
 	error = true;
-	reason = "Post não existe";
+	reason = erro;
   }
     return res.status(status).json({
     status: true,
@@ -52,7 +64,7 @@ let data;
 
 //o dry mais lindo q eu ja fiz na minha vida
 
-function url(PostID) {
+function Url(PostID) {
 return {
  posts : PostUrl(),
  singlePost : PostUrl(PostID),
